@@ -15,7 +15,7 @@ class Link(models.Model):
     choices=STATUS_ITEMS,verbose_name='状态')
     weight = models.PositiveIntegerField(default=1,choices=zip(range(1,6),range(1,6)),
     verbose_name='权重',help_text='权重高展示顺序靠前')
-    oener = models.ForeignKey(User,verbose_name='作者',on_delete=models.CASCADE)
+    owner = models.ForeignKey(User,verbose_name='作者',on_delete=models.CASCADE)
     created_time = models.DateTimeField(auto_now_add=True,verbose_name='创建时间')
 
     class Meta:

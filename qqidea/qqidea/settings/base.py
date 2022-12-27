@@ -31,6 +31,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    #设置项目的设置
+    'qqidea',
+    #设置项目的app
     'blog',
     'config',
     'comment',
