@@ -25,11 +25,10 @@ class PostInline(admin.StackedInline):
     fields = ['title','description']
     extra = 1
     model = Post
+    
 
 # @admin.register(Category)
 @admin.register(Category,site=custom_site)
-
-
 # class CategoryAdmin(admin.ModelAdmin):
 class CategoryAdmin(BaseOwnerAdmin):
     # 用户管理后台列表页面显示的字段
@@ -37,7 +36,7 @@ class CategoryAdmin(BaseOwnerAdmin):
     # 用户管理后 在保存或修改model要填写的字段
     fields = ('name','status','is_nav')
     # 直接在博客分类下编辑文章的一些操作
-    inlines = [PostInline]
+    # inlines = [PostInline]
 
     # 重写这个方法可以在save()之前做一些处理操作
     # def save_model(self, request: HttpRequest, obj: Category, form: Any, change: Any) -> None:

@@ -58,10 +58,15 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'qqidea.urls'
 
+# THEME = 'default'
+THEME = 'bootstrap'
+
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        # 自定义模版目录
+        'DIRS': [BASE_DIR/'themes/{}/templates'.format(THEME)],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

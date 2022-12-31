@@ -17,7 +17,6 @@ class BaseOwnerAdmin(admin.ModelAdmin):
     
     # 重写这个方法可以在save()之前做一些处理操作
     def save_model(self, request: HttpRequest, obj: Any, form: Any, change: Any):
-
         # request.user 就是管理后台当前登录的用户
         obj.owner = request.user
         return super().save_model(request, obj, form, change)

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}  {% endblock %}</title>
+</head>
+<body>
+
+    <div>
+        顶部分类：
+        {% for cate in navs %}
+        <a href="{% url 'category-list' cate.id %}">{{cate.name}}</a>
+        {% endfor %}
+    </div>
+    <hr />
+
+    <!-- 定义内容填充部分 -->
+    {% block main %}
+    {% endblock %}
+
+
+    <hr />
+    <div>
+        底部分类：
+        {% for cate in normal_categories %}
+        <a href="{% url 'category-list' cate.id %}">{{cate.name}}</a>
+        {% endfor %}
+    </div>
+
+    <hr />
+    <div>
+        侧边栏展示：
+        {% for sidebar in sidebar %}
+        <h4>{{sidebar.title}}</h4>
+        {{sidebar.content_html}}
+        {% endfor %}
+    </div>
+    
+</body>
+</html>
