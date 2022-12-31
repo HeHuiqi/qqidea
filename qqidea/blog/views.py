@@ -3,8 +3,11 @@ from django.db.models.query import QuerySet
 from django.shortcuts import render,HttpResponse,get_object_or_404
 
 
-from .models import Post,Category,Tag
+from .models import Post,Category,Tag,User
 from config.models import SideBar,Link
+from comment.models import Comment
+from comment.forms import CommentForm
+
 
 def post_list(request,category_id=None,tag_id=None):
     tag = None
@@ -97,7 +100,6 @@ class TagView(IndexView):
     def get_queryset(self) -> QuerySet[Any]:
         quryset = super().get_queryset()
         tag_id = self.kwargs.get('tag_id')
-        print('TagView-get_queryset')
         return quryset.filter(tag__id = tag_id)
 
 class PostDetailView(CommonViewMixin,DetailView):
@@ -105,5 +107,38 @@ class PostDetailView(CommonViewMixin,DetailView):
     template_name = 'blog/detail.html'
     context_object_name = 'post'
     pk_url_kwarg = 'post_id'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'comment_form':CommentForm,
+            'comment_list':Comment.get_by_target(self.request.path)
+        })
+        return context
+
+# 搜索文章
+from django.db.models import Q
+class SearchView(IndexView):
+    def get_context_data(self):
+        context = super().get_context_data()
+        context.update({'keyword':self.request.GET.get('keyword','')})
+        return context
     
+    def get_queryset(self) -> QuerySet[Any]:
+        queryset =  super().get_queryset()
+        keyword = self.request.GET.get('keyword')
+        if not keyword:
+            return queryset
+        # Q()条件查询，这里查询标题和摘要描述包含keyword的文章
+        # 只需要知道，通过Q表达式实现了类似这样的SQL语句: 
+        # SELECT ★FROM post WHERE title LIKE '%<keyword>%' or description ILIKE '%<keyword>%'
+        return queryset.filter(Q(title__icontains=keyword)|Q(description__icontains=keyword))
+    
+# 查询某个作者的所有文章
+class AuthorPostListView(IndexView):
+    def get_queryset(self) -> QuerySet[Any]:
+        quryset = super().get_queryset()
+        author_id = self.kwargs.get('owner_id')
+        return quryset.filter(owner_id=author_id)
+
 

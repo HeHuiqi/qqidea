@@ -21,7 +21,7 @@ class LinkAdmin(BaseOwnerAdmin):
 # class SidebarAdmin(admin.ModelAdmin):
 class SidebarAdmin(BaseOwnerAdmin):
     list_display = ('title','display_type','content','created_time')
-    fields = ['title','display_type','content']
+    fields = ['title','display_type','status','content']
 
     def save_model(self, request: Any, obj: SideBar, form: Any, change: Any) -> None:
         obj.owner = request.user

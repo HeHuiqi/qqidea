@@ -1,0 +1,25 @@
+<hr>
+<h6>发表您的评论</h6>
+<div class="comment">
+    <form action="/comment/" method="post" class="form-group">
+        {% csrf_token %}
+        <input type="hidden" name="target" value="{{target}}"/>
+        {{comment_form}}
+        <input type="submit" class="btn btn-normal" value="写好了！">
+    </form>
+    <!-- 评论列表 -->
+    <ul class="list-group">
+        {% for comment in comment_list %}
+        <li class="list-group-item">
+            <div class="nickname">
+                    <a href="{{comment.website}}">{{comment.website}}</a>
+                    <span>{{comment.created_time}}</span>
+            </div>
+            <div class="comment-content">
+                {{comment.content}}
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+    
+</div>

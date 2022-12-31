@@ -3,8 +3,9 @@ from django.contrib import admin
 from django.urls import path,re_path
 
 from blog.views import post_list,post_detail
-from blog.views import IndexView,CategoryView,TagView,PostDetailView
-from config.views import links
+from blog.views import IndexView,CategoryView,TagView,PostDetailView,SearchView,AuthorPostListView
+from config.views import links,LinkListView
+from comment.views import CommentView
 
 from .custom_site import custom_site
 
@@ -24,8 +25,15 @@ urlpatterns = [
     # path('post/<post_id>.html/',view=post_detail,name='post-detail'),
     path('post/<post_id>.html/',view=PostDetailView.as_view(),name='post-detail'),
 
+    path('search/',view=SearchView.as_view(),name='search'),
 
-    path('links/',view=links,name='links'),
+    path('author/<owner_id>/',view=AuthorPostListView.as_view(),name='author'),
+
+
+    path('links/',view=LinkListView.as_view(),name='links'),
+
+    path('comment/',view=CommentView.as_view(),name='comment'),
+
 
     path('supper_admin/', admin.site.urls,name='supper_admin'),
     # 使用自定义的管理后台

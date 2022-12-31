@@ -63,18 +63,20 @@ class TagAdmin(BaseOwnerAdmin):
 
 
 class CategoryOwnerFilter(admin.SimpleListFilter):
-    """
-    自定义过滤器值展示当前用户分类
-    """
+    """ 自定义过滤器只展示当前用户分类 """
+
     title = '分类过滤器'
-    parameter_name = 'owner_catergory'
-    def lookups(self, request: Any, model_admin: Any):
-        return Category.objects.filter(owner=request.user).values_list('id','name')
-    
-    def queryset(self, request: Any, queryset: QuerySet[Any]):
-        catergory_id = self.value()
-        if catergory_id:
-            return queryset.filter(catergory_id=catergory_id)
+    parameter_name = 'owner_category'
+    def lookups(self, request, model_admin):
+        return Category.objects.filter(owner=request.user).values_list('id', 'name')
+
+    def queryset(self, request, queryset):
+        category_id = self.value()
+        # print('category_id=',category_id)
+        # print('queryset=',queryset)
+
+        if category_id:
+            return queryset.filter(category_id=self.value())
         return queryset
 
 
@@ -90,7 +92,7 @@ class PostAdmin(BaseOwnerAdmin):
     list_display_links = []
     # 配置过滤字段
     # list_filter = ['category']
-    list_filter = [CategoryOwnerFilter]
+    list_filter = (CategoryOwnerFilter,)
 
     # 配置搜索字段在列表页显示
     search_fields = ['title','category__name']

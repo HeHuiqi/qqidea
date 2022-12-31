@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -127,7 +128,22 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
+
+
+# 配置项目的静态文件路径
+STATICFILES_DIRS = [ 
+    BASE_DIR/'themes/{}/static'.format(THEME),
+]
+
+# 静态项目访问路径，从STATICFILES_DIRS配置的目录开始查找，如 /static/css/base.css
 STATIC_URL = 'static/'
+
+#设置静态文件的根目录，这里为 $HOME/blog_static，部署时用到
+HOME = os.path.expandvars('$HOME')
+STATIC_ROOT = os.path.join(HOME,'blog_static')
+# 设置完执行 python manage.py collectstatic 收集所有的静态文件到STATIC_ROOT目录
+# 这将作为Nginx的静态文件的目录
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

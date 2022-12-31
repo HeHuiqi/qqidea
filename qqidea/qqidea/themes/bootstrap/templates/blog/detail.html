@@ -1,51 +1,5 @@
 {% extends "./base.html" %}
 
-<!-- <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>博客详情</title>
-</head>
-
-<body>
-
-    <div>
-        顶部分类：
-        {% for cate in navs %}
-        <a href="/category/{{cate.id}}">{{cate.name}}</a>
-        {% endfor %}
-    </div>
-    <hr />
-
-    {% if post %}
-    <h1>{{post.title}}</h1>
-    <div>
-        <span>分类：{{post.category.name}}</span>
-        <span>作者：{{post.owner.username}}</span>
-    </div>
-    <hr />
-    <p>{{post.content}}</p>
-    {% endif %}
-
-    <div>
-        侧边栏展示：
-        {% for sidebar in sidebar %}
-        <h4>{{sidebar.title}}</h4>
-        {{sidebar.content_html}}
-        {% endfor %}
-    </div>
-    <div>
-        底部分类：
-        {% for cate in normal_categories %}
-        <a href="/category/{{cate.id}}">{{cate.name}}</a>
-        {% endfor %}
-    </div>
-</body>
-
-</html> -->
 
 {% block title %}
     {{post.title}}
@@ -55,12 +9,47 @@
 {% if post %}
 <h1>{{post.title}}</h1>
 <div>
-    <span>分类：{{post.category.name}}</span>
-    <span>作者：{{post.owner.username}}</span>
+    <span class="card-link">作者: <a href="{% url 'author' post.owner.id %}">{{post.owner.username}}</a> </span>
+    <span class="card-link">分类: <a href="{% url 'category-list' post.category.id %}">{{post.category.name}}</a> </span>
+    <span class="card-link">
+        标签：
+        {% for tag in post.tag.all %}
+        <a href="{% url 'tag-list' tag.id %}">{{tag.name}}</a>
+        {% endfor %}
+    </span>
 </div>
 <hr />
 <p>{{post.content}}</p>
 {% endif %}
+
+<!-- <hr>
+<div class="comment">
+    <form action="/comment/" method="post" class="form-group">
+        {% csrf_token %}
+        <input type="hidden" name="target" value="{{request.path}}"/>
+        {{comment_form}}
+        <input type="submit" value="写好了！">
+    </form>
+    <ul class="list-group">
+        {% for comment in comment_list %}
+        <li class="list-group-item">
+            <div class="nickname">
+                    <a href="{{comment.website}}">{{comment.website}}</a>
+                    <span>{{comment.created_time}}</span>
+            </div>
+            <div class="comment-content">
+                {{comment.content}}
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+    
+</div> -->
+
+<!-- 首先加载我们的自定标签 -->
+{% load comment_block %}
+<!-- 使用自定义标签 -->
+{% comment_block request.path%}
+
+
 {% endblock %}
-
-
