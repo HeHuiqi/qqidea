@@ -40,7 +40,10 @@ urlpatterns = [
     path('comment/',view=CommentView.as_view(),name='comment'),
 
     # rss 和 sitemap
+    # http://127.0.0.1:8000/rss/
     path('rss/',view=LatestPostFeed(),name='rss'),
+
+    # http://127.0.0.1:8000/sitemap.xml
     path('sitemap.xml',view=sitemap_vews.sitemap,kwargs={'sitemaps':{'posts':PostSitemap}}),
 
 
