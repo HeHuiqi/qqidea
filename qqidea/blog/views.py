@@ -1,6 +1,11 @@
 from typing import Any
+from datetime import date
 from django.db.models.query import QuerySet
+from django.core.cache import cache
+from django.db.models import Q,F
 from django.shortcuts import render,HttpResponse,get_object_or_404
+from django.http import HttpRequest
+
 
 
 from .models import Post,Category,Tag,User
@@ -108,6 +113,47 @@ class PostDetailView(CommonViewMixin,DetailView):
     context_object_name = 'post'
     pk_url_kwarg = 'post_id'
 
+    def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+        response = super().get(request, *args, **kwargs)
+        # 更新文章的访问量
+        # Post.objects.filter(pk=self.object.id).update(pv =F('pv')+1,uv=F('uv')+1)
+
+        #使用缓存的方式，避免频繁更新
+        self.handle_visited()
+
+
+        # 调试用
+        # from django.db import connection
+        # # 打印生成的查询sql
+        # print(connection.queries)
+        return response
+
+    def handle_visited(self):
+        increase_pv = False
+        increase_uv = False
+        uid = self.request.blog_uid
+        pv_key = 'pv:%s:%s' % (uid,self.request.path)
+        uv_key = 'uiv:%s:%s:%s' % (uid,str(date.today()),self.request.path)
+        # 使用内存缓存
+        if not cache.get(pv_key):
+            print('not-pv-key')
+            increase_pv = True
+            cache.set(pv_key,1,1*60) #1分钟有效
+        if not cache.get(uv_key):
+            print('not-uv-key')
+            increase_uv = True
+            cache.set(uv_key,1,24*60*60) #24小时有效
+
+        if increase_pv and increase_uv:
+            Post.objects.filter(pk=self.object.id).update(pv=F('pv')+1,uv=F('uv')+1)
+        elif increase_pv:
+            Post.objects.filter(pk=self.object.id).update(pv=F('pv')+1)
+        elif increase_uv:
+            Post.objects.filter(pk=self.object.id).update(uv=F('uv')+1)
+
+
+
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
@@ -117,7 +163,6 @@ class PostDetailView(CommonViewMixin,DetailView):
         return context
 
 # 搜索文章
-from django.db.models import Q
 class SearchView(IndexView):
     def get_context_data(self):
         context = super().get_context_data()

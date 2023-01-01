@@ -1,4 +1,5 @@
 from django import forms
+import mistune
 from .models import Comment
 
 # 使用内置form组件自定义渲染到模版中
@@ -31,6 +32,8 @@ class CommentForm(forms.ModelForm):
         content = self.cleaned_data.get('content')
         if len(content) < 10:
             raise forms.ValidationError('内容长度太短了')
+        # 将markdown格式的文本专为html
+        content = mistune.markdown(content)
         return content
     
     class Meta:

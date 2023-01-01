@@ -85,7 +85,7 @@ class CategoryOwnerFilter(admin.SimpleListFilter):
 # class PostAdmin(admin.ModelAdmin):
 class PostAdmin(BaseOwnerAdmin):
     list_display = [
-        'title','category','status','owner',
+        'title','category','status','owner','pv','uv',
         'created_time','operator'
     ]
     # 配置哪些字段可以作为链接点击进入编辑页面

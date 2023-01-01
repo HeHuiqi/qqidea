@@ -16,7 +16,10 @@
                     <span>{{comment.created_time}}</span>
             </div>
             <div class="comment-content">
+                <!-- 使用  mistune 解析markdown -->
+                {% autoescape off %}
                 {{comment.content}}
+                {% endautoescape %}
             </div>
         </li>
         {% endfor %}
