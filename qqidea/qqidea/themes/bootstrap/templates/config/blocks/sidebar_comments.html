@@ -1,6 +1,6 @@
 <ul>
     {% for comment in comments %}
-    <li>
+    <li style="list-style: none;">
         <a href="{{comment.target}}">{{comment.target.title}}</a> | {{comment.nickname}} : {{comment.content}}
     </li>
     {% endfor %}

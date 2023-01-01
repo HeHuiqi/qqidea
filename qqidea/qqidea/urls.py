@@ -9,6 +9,11 @@ from comment.views import CommentView
 
 from .custom_site import custom_site
 
+# rss 和 sitemap
+from django.contrib.sitemaps import views as sitemap_vews
+from blog.rss import LatestPostFeed
+from blog.sitemap import PostSitemap
+
 urlpatterns = [
 
     # 使用自定义的管理后台
@@ -33,6 +38,10 @@ urlpatterns = [
     path('links/',view=LinkListView.as_view(),name='links'),
 
     path('comment/',view=CommentView.as_view(),name='comment'),
+
+    # rss 和 sitemap
+    path('rss/',view=LatestPostFeed(),name='rss'),
+    path('sitemap.xml',view=sitemap_vews.sitemap,kwargs={'sitemaps':{'posts':PostSitemap}}),
 
 
     path('supper_admin/', admin.site.urls,name='supper_admin'),
