@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'blog',
     'config',
     'comment',
-    
+    # 使用第三方管理后台UI
+    'simpleui',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -152,3 +153,11 @@ STATIC_ROOT = os.path.join(HOME,'blog_static')
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# 隐藏右侧SimpleUI广告链接和使用分析
+SIMPLEUI_HOME_INFO = False 
+SIMPLEUI_ANALYSIS = False 
+
+# 去掉默认Logo或换成自己Logo链接
+SIMPLEUI_LOGO = 'https://profile-avatar.csdnimg.cn/7ebadcf77169434bb845e941c5eb2e19_u012275628.jpg' 

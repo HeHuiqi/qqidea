@@ -5,6 +5,7 @@ import sys
 
 
 def main():
+    print('本地运行开始')
     """Run administrative tasks."""
     # os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'qqidea.settings')
     #  读取 QQIDEA_PROFILE 环境变量，如果没有取默认值develop
