@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'comment',
     # 使用第三方管理后台UI
     'simpleui',
+    # restful 
+    'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -161,3 +163,8 @@ SIMPLEUI_ANALYSIS = False
 
 # 去掉默认Logo或换成自己Logo链接
 SIMPLEUI_LOGO = 'https://profile-avatar.csdnimg.cn/7ebadcf77169434bb845e941c5eb2e19_u012275628.jpg' 
+
+# https://stackoverflow.com/questions/58742948/rest-framework-swagger-autoschema-object-has-no-attribute-get-link
+# 
+REST_FRAMEWORK = {'DEFAULT_SCHEMA_CLASS':'rest_framework.schemas.coreapi.AutoSchema' }
+

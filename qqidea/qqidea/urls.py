@@ -1,6 +1,6 @@
 
 from django.contrib import admin
-from django.urls import path,re_path
+from django.urls import path,re_path,include
 
 from blog.views import post_list,post_detail
 from blog.views import IndexView,CategoryView,TagView,PostDetailView,SearchView,AuthorPostListView
@@ -13,6 +13,17 @@ from .custom_site import custom_site
 from django.contrib.sitemaps import views as sitemap_vews
 from blog.rss import LatestPostFeed
 from blog.sitemap import PostSitemap
+
+# api
+from rest_framework.routers import DefaultRouter
+from blog.apis import api_post_list,PostList,PostViewSet
+# 配置 api 文档
+from rest_framework.documentation import include_docs_urls
+
+
+router =DefaultRouter()
+#使用 PostViewSet view  我们定义了 /api/post/ 和 /api/post/1/ 两个api
+router.register(r'post',PostViewSet,basename='api-post')
 
 urlpatterns = [
 
@@ -45,6 +56,20 @@ urlpatterns = [
 
     # http://127.0.0.1:8000/sitemap.xml
     path('sitemap.xml',view=sitemap_vews.sitemap,kwargs={'sitemaps':{'posts':PostSitemap}}),
+
+
+    # http://127.0.0.1:8000/api/post/
+    #api
+    # path('api/post/',view=api_post_list,name='post-list'),
+    # path('api/post/',view=PostList.as_view(),name='post-list'),
+
+    # http://127.0.0.1:8000/api/
+    # http://127.0.0.1:8000/api/post/
+    # http://127.0.0.1:8000/api/post/1
+    path('api/',include((router.urls,'api'),namespace='api')),
+
+    # 定义api文档路由
+    path("api/docs/",include_docs_urls(title='qqidea api')),
 
 
     path('supper_admin/', admin.site.urls,name='supper_admin'),
