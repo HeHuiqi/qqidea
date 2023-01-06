@@ -142,8 +142,16 @@ class Post(models.Model):
     
     # 获取最新文章
     @classmethod
-    def latest_posts(cls):
-        return cls.objects.filter(status=cls.STATUS_NORMAL)
+    def latest_posts(cls,with_realated=True):
+        # 模拟网络延时
+        # import time
+        # time.sleep(3)
+
+        queryset = cls.objects.filter(status=cls.STATUS_NORMAL)
+        if with_realated:
+            # 减少SQL重复查询
+            queryset = queryset.select_related('owner','category')
+        return queryset
     
     # 获取最热文章
     @classmethod

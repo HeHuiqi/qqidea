@@ -166,5 +166,8 @@ SIMPLEUI_LOGO = 'https://profile-avatar.csdnimg.cn/7ebadcf77169434bb845e941c5eb2
 
 # https://stackoverflow.com/questions/58742948/rest-framework-swagger-autoschema-object-has-no-attribute-get-link
 # 
-REST_FRAMEWORK = {'DEFAULT_SCHEMA_CLASS':'rest_framework.schemas.coreapi.AutoSchema' }
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS':'rest_framework.schemas.coreapi.AutoSchema',
+
+ }
 

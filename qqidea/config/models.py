@@ -66,7 +66,7 @@ class SideBar(models.Model):
             result = self.content
         elif self.display_type == self.DISPLAY_LATEST:
             context = {
-                'posts':Post.latest_posts()
+                'posts':Post.latest_posts(with_realated=False)
             }
             result = render_to_string('config/blocks/sidebar_posts.html',context=context)
         elif self.display_type == self.DISPLAY_HOT:
@@ -85,5 +85,7 @@ class SideBar(models.Model):
     # 获取所有的数据
     @classmethod
     def get_all(cls):
+       
+
         return cls.objects.filter(status=cls.STATUS_SHOW)
 

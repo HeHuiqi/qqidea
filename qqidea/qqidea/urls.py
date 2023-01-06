@@ -2,10 +2,13 @@
 from django.contrib import admin
 from django.urls import path,re_path,include
 
+from django.conf import settings
 from blog.views import post_list,post_detail
 from blog.views import IndexView,CategoryView,TagView,PostDetailView,SearchView,AuthorPostListView
 from config.views import links,LinkListView
 from comment.views import CommentView
+
+
 
 from .custom_site import custom_site
 
@@ -16,7 +19,7 @@ from blog.sitemap import PostSitemap
 
 # api
 from rest_framework.routers import DefaultRouter
-from blog.apis import api_post_list,PostList,PostViewSet
+from blog.apis import api_post_list,PostList,PostViewSet,CategoryViewSet
 # 配置 api 文档
 from rest_framework.documentation import include_docs_urls
 
@@ -24,6 +27,9 @@ from rest_framework.documentation import include_docs_urls
 router =DefaultRouter()
 #使用 PostViewSet view  我们定义了 /api/post/ 和 /api/post/1/ 两个api
 router.register(r'post',PostViewSet,basename='api-post')
+# 我们定义了 /api/category/ 和 /api/category/1/ 两个api
+router.register(r'category',CategoryViewSet,basename='api-category')
+
 
 urlpatterns = [
 
@@ -69,6 +75,7 @@ urlpatterns = [
     path('api/',include((router.urls,'api'),namespace='api')),
 
     # 定义api文档路由
+    # http://127.0.0.1:8000/api/docs/
     path("api/docs/",include_docs_urls(title='qqidea api')),
 
 
@@ -77,3 +84,11 @@ urlpatterns = [
     path('admin/', custom_site.urls,name='custom_admin'),
 
 ]
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns += [
+        path('__debug__/', include('debug_toolbar.urls')),
+    ]
+
+
